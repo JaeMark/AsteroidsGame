@@ -6,7 +6,7 @@ function setup() {
   let startingPosition = createVector(width/2, height/2);
   let startingVelocity = createVector(0, 0);
   let spriteSize = 5;
-  let sprite = 5;
+  let sprite = 10;
   let health = 5;
   ship = new Character(startingPosition, startingVelocity, spriteSize, sprite, health);
 
@@ -14,12 +14,15 @@ function setup() {
 
 function draw() {
   background(220);
-  
-  if(mouseIsPressed) {
-    ship.thrust();
-  }
-  
+
   ship.display();
   ship.update();
   
+}
+
+function keyPressed() {
+  clear();
+  if(key == "ArrowUp") {
+    ship.thrust();
+  }
 }
