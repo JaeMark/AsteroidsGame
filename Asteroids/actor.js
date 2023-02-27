@@ -1,40 +1,31 @@
 class Actor {
-  constructor(startingPosition, startingVelocity, size, sprite, health) {
+  constructor(startingPosition, startingVelocity, radius, sprite, health) {
     this.position = startingPosition;
     this.velocity = startingVelocity;
-    this.size = size;
+    this.radius = radius;
     this.sprite = sprite;
     this.health = health;
   }
 
   update() {
     this.position.add(this.velocity);
-    this.checkEdges();
   }
 
   isDead() {
     return this.health <= 0;
   }
 
-  checkEdges() {
-    let collisionRadius = this.size / 2;
-    if (this.position.x > width - collisionRadius) {
-      this.position.x = 0;
-    } else if (this.position.x < collisionRadius) {
-      this.position.x = width;
-    }
-
-    if (this.position.y > height - collisionRadius) {
-      this.position.y = 0;
-    } else if (this.position.y < collisionRadius) {
-      this.position.y = height;
-    }
-  }
-
   display() {
     push();
-			noFill();
-			triangle(-this.size, this.size, 0, -this.size, this.size, this.size);
+    noFill();
+    triangle(
+      -this.radius,
+      this.radius,
+      0,
+      -this.radius,
+      this.radius,
+      this.radius
+    );
     pop();
   }
 }

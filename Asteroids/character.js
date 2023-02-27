@@ -3,33 +3,35 @@ class Character extends Actor {
     startingPosition,
     startingVelocity,
     heading,
-    size,
+    radius,
     sprite,
     health
   ) {
-    super(startingPosition, startingVelocity, size, sprite, health);
+    super(startingPosition, startingVelocity, radius, sprite, health);
     this.heading = heading;
     this.rotation = 0;
     this.maxSpeed = createVector(10, 10);
     this.acc = createVector(1, 1);
-		this.isEngineOne = false;
+    this.isEngineOne = false;
   }
 
-	turnOnEngine(isEngineSetToTurnOn) {
-		this.isEngineOn = isEngineSetToTurnOn;
-	}
+  turnOnEngine(isEngineSetToTurnOn) {
+    this.isEngineOn = isEngineSetToTurnOn;
+  }
 
   thrust() {
     let force = p5.Vector.fromAngle(this.heading);
+    force.mult(0.1);
     this.velocity.add(force);
   }
 
   update() {
-		if(this.isEngineOn) {
-			this.thrust();
-		}
+    if (this.isEngineOn) {
+      this.thrust();
+    }
     super.update();
-		this.velocity.mult(0.95);
+    this.velocity.mult(0.95);
+    this.checkEdges();
   }
 
   display() {
@@ -44,13 +46,27 @@ class Character extends Actor {
 			}
 			*/
     this.heading += this.rotation;
-    rotate(this.heading + PI/2);
+    rotate(this.heading + PI / 2);
     super.display();
     pop();
   }
 
   setRotation(angle) {
     this.rotation = angle;
+  }
+
+  checkEdges() {
+    if (this.position.x > width + this.radius) {
+      this.position.x = -this.radius;
+    } else if (this.position.x < -this.radius) {
+      this.position.x = width + this.radius;
+    }
+
+    if (this.position.y > height + this.radius) {
+      this.position.y = -this.radius;
+    } else if (this.position.y < -this.radius) {
+      this.position.y = height + this.radius;
+    }
   }
 
   shoot() {}
