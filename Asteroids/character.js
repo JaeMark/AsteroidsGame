@@ -55,19 +55,5 @@ class Character extends Actor {
     this.rotation = angle;
   }
 
-  checkEdges() {
-    if (this.position.x > width + this.radius) {
-      this.position.x = -this.radius;
-    } else if (this.position.x < -this.radius) {
-      this.position.x = width + this.radius;
-    }
-
-    if (this.position.y > height + this.radius) {
-      this.position.y = -this.radius;
-    } else if (this.position.y < -this.radius) {
-      this.position.y = height + this.radius;
-    }
-  }
-
   shoot() {}
 }
