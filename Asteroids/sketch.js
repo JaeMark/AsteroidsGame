@@ -40,9 +40,10 @@ function keyPressed() {
 
   if (keyIsDown(87)) {
     // The 'w' key is being pressed.
-    ship.thrust();
+    ship.turnOnEngine(true);
   } else {
     // Turn off engine.
+    ship.turnOnEngine(false);
   }
 }
 

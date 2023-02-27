@@ -12,7 +12,12 @@ class Character extends Actor {
     this.rotation = 0;
     this.maxSpeed = createVector(10, 10);
     this.acc = createVector(1, 1);
+		this.isEngineOne = false;
   }
+
+	turnOnEngine(isEngineSetToTurnOn) {
+		this.isEngineOn = isEngineSetToTurnOn;
+	}
 
   thrust() {
     let force = p5.Vector.fromAngle(this.heading);
@@ -20,7 +25,11 @@ class Character extends Actor {
   }
 
   update() {
+		if(this.isEngineOn) {
+			this.thrust();
+		}
     super.update();
+		this.velocity.mult(0.95);
   }
 
   display() {
