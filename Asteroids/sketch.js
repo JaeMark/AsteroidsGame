@@ -41,13 +41,15 @@ function keyPressed() {
   if (keyIsDown(87)) {
     // The 'w' key is being pressed.
     ship.turnOnEngine(true);
-  } else {
-    // Turn off engine.
-    ship.turnOnEngine(false);
   }
 }
 
 function keyReleased() {
   // stop ship rotation
   ship.setRotation(0);
+
+  if (!keyIsDown(87)) {
+    // turn off engine
+    ship.turnOnEngine(false);
+  }
 }

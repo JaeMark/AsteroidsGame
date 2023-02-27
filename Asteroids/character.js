@@ -30,7 +30,7 @@ class Character extends Actor {
       this.thrust();
     }
     super.update();
-    this.velocity.mult(0.95);
+    this.velocity.mult(0.99);
     this.checkEdges();
   }
 
