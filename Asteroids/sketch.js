@@ -21,8 +21,16 @@ function draw() {
 }
 
 function keyPressed() {
-  clear();
-  if(key == "ArrowUp") {
+  if (keyIsDown(65)) { // The 'a' key is being pressed. 
+    // rotate counter-clockwise 
+  } 
+  if (keyIsDown(68)) { // The 'd' key is being pressed. 
+    // rotate clockwise 
+  }
+
+  if (keyIsDown(87)) { // The 'w' key is being pressed. 
     ship.thrust();
+  } else { 
+    // Turn off engine. 
   }
 }
