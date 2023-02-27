@@ -1,6 +1,8 @@
 class Character extends Actor {
-	constructor(startingPosition, startingVelocity, size, sprite, health) {
+	constructor(startingPosition, startingVelocity, heading, size, sprite, health) {
 		super(startingPosition, startingVelocity, size, sprite, health);
+		this.heading = heading;
+		this.rotation = 0;
 		this.maxSpeed = createVector(10, 10);
 		this.acc = createVector(1, 1);
 		this.isThrusting = false;
@@ -22,23 +24,28 @@ class Character extends Actor {
 			}
 		}
 	}
-	
+
 	display() {
 		push();
 			translate(this.position.x, this.position.y);
+			/*
 			// direction of the velocity.
 			if (keyIsPressed) {
 				let noseLength = map(this.velocity.mag(), 0, 10, 0, this.size * 2);
 				let direction = this.velocity.copy().setMag(noseLength);
 				line(0, 0, direction.x, direction.y);
 			}
-
-			let heading = atan2(this.velocity.y, this.velocity.x);
-			rotate(heading);
+			*/
+			this.heading += this.rotation;
+			rotate(this.heading);
 			super.display();
 		pop();
 	}
 	
+	setRotation(angle) {
+		this.rotation = angle;
+	}
+
 	shoot() {
 		
 	}
