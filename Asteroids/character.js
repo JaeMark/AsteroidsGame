@@ -24,7 +24,19 @@ class Character extends Actor {
 	}
 	
 	display() {
-		super.display();
+		push();
+			translate(this.position.x, this.position.y);
+			// direction of the velocity.
+			if (keyIsPressed) {
+				let noseLength = map(this.velocity.mag(), 0, 10, 0, this.size * 2);
+				let direction = this.velocity.copy().setMag(noseLength);
+				line(0, 0, direction.x, direction.y);
+			}
+
+			let heading = atan2(this.velocity.y, this.velocity.x);
+			rotate(heading);
+			super.display();
+		pop();
 	}
 	
 	shoot() {

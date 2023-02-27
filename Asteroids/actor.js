@@ -33,11 +33,8 @@ class Actor {
 
   display() {
     push();
-        translate(this.position.x, this.position.y)
-        let heading = atan2(this.velocity.y, this.velocity.x);
-        rotate(heading);
-        noFill();
-        triangle(-this.size, this.size, this.size, this.size, 0, -this.size);
+			noFill();
+			triangle(-this.size, this.size, 0, -this.size, this.size, this.size);
     pop();
   }
 }
