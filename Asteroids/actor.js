@@ -17,15 +17,15 @@ class Actor {
 
   display() {
     push();
-    noFill();
-    triangle(
-      -this.radius,
-      this.radius,
-      0,
-      -this.radius,
-      this.radius,
-      this.radius
-    );
+			noFill();
+			triangle(
+				-this.radius,
+				this.radius,
+				0,
+				-this.radius,
+				this.radius,
+				this.radius
+			);
     pop();
   }
 }

@@ -1,4 +1,6 @@
 let ship;
+let asteroids = [];
+let numAsteroids = 5;
 
 function setup() {
   createCanvas(400, 400);
@@ -17,6 +19,20 @@ function setup() {
     sprite,
     health
   );
+
+  for (let i = 0; i < numAsteroids; i++) {
+    startingPosition = createVector(random(0, width), random(0, height));
+    spriteSize = 10;
+    asteroids.push(
+      new Asteroid(
+        startingPosition,
+        startingVelocity,
+        spriteSize,
+        sprite,
+        health
+      )
+    );
+  }
 }
 
 function draw() {
@@ -24,6 +40,11 @@ function draw() {
 
   ship.display();
   ship.update();
+
+  for (const asteroid of asteroids) {
+    asteroid.display();
+    //asteroid.update();
+  }
 }
 
 function keyPressed() {
