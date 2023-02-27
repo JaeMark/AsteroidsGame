@@ -1,7 +1,25 @@
+let ship;
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(400, 400);
+  
+  let startingPosition = createVector(width/2, height/2);
+  let startingVelocity = createVector(0, 0);
+  let spriteSize = 5;
+  let sprite = 5;
+  let health = 5;
+  ship = new Character(startingPosition, startingVelocity, spriteSize, sprite, health);
+  
 }
 
 function draw() {
-  circle(mouseX, mouseY, 40);
+  background(220);
+  
+  if(mouseIsPressed) {
+    ship.thrust();
+  }
+  
+  ship.display();
+  ship.update();
+  
 }
