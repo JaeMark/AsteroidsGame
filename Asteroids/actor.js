@@ -32,6 +32,10 @@ class Actor {
   }
 
   display() {
-    circle(this.position.x, this.position.y, 10);
+    push();
+        translate(this.position.x, this.position.y)
+        noFill();
+        triangle(-this.size, this.size, this.size, this.size, 0, -this.size);
+    pop();
   }
 }
