@@ -22,6 +22,7 @@ function setup() {
 
   for (let i = 0; i < numAsteroids; i++) {
     startingPosition = createVector(random(0, width), random(0, height));
+    startingVelocity = p5.Vector.random2D();
     spriteSize = 10;
     asteroids.push(
       new Asteroid(
@@ -41,9 +42,9 @@ function draw() {
   ship.display();
   ship.update();
 
-  for (const asteroid of asteroids) {
-    asteroid.display();
-    //asteroid.update();
+  for (let i = 0; i < asteroids.length; i++) {
+    asteroids[i].display();
+    asteroids[i].update();
   }
 }
 
