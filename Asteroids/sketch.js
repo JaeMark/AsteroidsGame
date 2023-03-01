@@ -1,6 +1,7 @@
 let ship;
 let asteroids = [];
 let numAsteroids = 5;
+let playerProjectiles = [];
 
 function setup() {
   createCanvas(400, 400);
@@ -46,6 +47,23 @@ function draw() {
     asteroids[i].display();
     asteroids[i].update();
   }
+
+  for (let i = 0; i < playerProjectiles.length; i++) {
+    playerProjectiles.display();
+    playerProjectiles.update();
+  }
+}
+
+function fire() {
+  let startingPosition = createVector(ship.position.x, ship.position.y);
+  let startingVelocity = p5.Vector.fromAngle(ship.heading);
+  startingVelocity.mult(5);
+  let spriteSize = 2;
+  let sprite = 10;
+  let health = 1;
+  asteroids.push(
+    new Asteroid(startingPosition, startingVelocity, spriteSize, sprite, health)
+  );
 }
 
 function keyPressed() {
@@ -58,6 +76,11 @@ function keyPressed() {
     // The 'd' key is being pressed.
     // rotate clockwise
     ship.setRotation(0.1);
+  }
+
+  if (keyIsDown(32)) {
+    // The space key is being pressed.
+    fire();
   }
 
   if (keyIsDown(87)) {
