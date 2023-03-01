@@ -7,12 +7,15 @@ class Character extends Actor {
     sprite,
     health
   ) {
-    super(startingPosition, startingVelocity, radius, sprite, health);
+    super(startingPosition, startingVelocity, radius, sprite);
+    this.health = health;
     this.heading = heading;
     this.rotation = 0;
-    this.maxSpeed = createVector(10, 10);
-    this.acc = createVector(1, 1);
     this.isEngineOne = false;
+  }
+
+  isDead() {
+    return this.health <= 0;
   }
 
   turnOnEngine(isEngineSetToTurnOn) {

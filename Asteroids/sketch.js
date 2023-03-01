@@ -30,8 +30,7 @@ function setup() {
         startingPosition,
         startingVelocity,
         spriteSize,
-        sprite,
-        health
+        sprite
       )
     );
   }
@@ -39,6 +38,11 @@ function setup() {
 
 function draw() {
   background(220);
+
+  for (let i = 0; i < playerProjectiles.length; i++) {
+    playerProjectiles.display();
+    playerProjectiles.update();
+  }
 
   ship.display();
   ship.update();
@@ -48,10 +52,6 @@ function draw() {
     asteroids[i].update();
   }
 
-  for (let i = 0; i < playerProjectiles.length; i++) {
-    playerProjectiles.display();
-    playerProjectiles.update();
-  }
 }
 
 function fire() {
@@ -60,9 +60,8 @@ function fire() {
   startingVelocity.mult(5);
   let spriteSize = 2;
   let sprite = 10;
-  let health = 1;
   asteroids.push(
-    new Asteroid(startingPosition, startingVelocity, spriteSize, sprite, health)
+    new Asteroid(startingPosition, startingVelocity, spriteSize, sprite)
   );
 }
 

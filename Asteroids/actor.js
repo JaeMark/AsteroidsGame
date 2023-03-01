@@ -4,15 +4,10 @@ class Actor {
     this.velocity = startingVelocity;
     this.radius = radius;
     this.sprite = sprite;
-    this.health = health;
   }
 
   update() {
     this.position.add(this.velocity);
-  }
-
-  isDead() {
-    return this.health <= 0;
   }
 
   display() {

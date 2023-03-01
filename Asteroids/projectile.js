@@ -1,6 +1,6 @@
 class Asteroid extends Actor {
-    constructor(startingPosition, startingVelocity, radius, sprite, health) {
-      super(startingPosition, startingVelocity, radius, sprite, health);
+    constructor(startingPosition, startingVelocity, radius, sprite) {
+      super(startingPosition, startingVelocity, radius, sprite);
     }
 
     display() {
