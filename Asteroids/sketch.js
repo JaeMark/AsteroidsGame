@@ -40,8 +40,8 @@ function draw() {
   background(220);
 
   for (let i = 0; i < playerProjectiles.length; i++) {
-    playerProjectiles.display();
-    playerProjectiles.update();
+    playerProjectiles[i].display();
+    playerProjectiles[i].update();
   }
 
   ship.display();
@@ -60,8 +60,8 @@ function fire() {
   startingVelocity.mult(5);
   let spriteSize = 2;
   let sprite = 10;
-  asteroids.push(
-    new Asteroid(startingPosition, startingVelocity, spriteSize, sprite)
+  playerProjectiles.push(
+    new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
   );
 }
 

@@ -1,10 +1,11 @@
-class Asteroid extends Actor {
-    constructor(startingPosition, startingVelocity, radius, sprite) {
-      super(startingPosition, startingVelocity, radius, sprite);
-    }
+class Projectile extends Actor {
+  constructor(startingPosition, startingVelocity, radius, sprite) {
+    super(startingPosition, startingVelocity, radius, sprite);
+  }
 
-    display() {
-        strokeWeight(2);
-        point(this.postion.x, this.position.y);
-    }
+  display() {
+    push();
+      circle(this.position.x, this.position.y, this.radius);
+    pop();
+  }
 }
