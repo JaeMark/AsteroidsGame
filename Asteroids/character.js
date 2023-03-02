@@ -36,16 +36,18 @@ class Character extends Actor {
     this.velocity.mult(0.97);
   }
 
+  respawn() {
+    --this.health;
+    this.position = createVector(width / 2, height / 2);
+  }
+
   display() {
     push();
     translate(this.position.x, this.position.y);
-    image(this.sprite, 0, 0, this.radius, this.radius);
-    /*
-      
-      this.heading += this.rotation;
-      rotate(this.heading + PI / 2);
-      super.display();
-      */
+    this.heading += this.rotation;
+    rotate(this.heading + PI / 2);
+    image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
+    super.display();
     pop();
   }
 

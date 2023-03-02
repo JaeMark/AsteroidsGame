@@ -35,19 +35,23 @@ class AsteroidManager {
         switch (type) {
             case AsteroidType.Large:
                 sprite = this.largeSprite;
-                size = 20;
+                size = 60;
                 break;
             case AsteroidType.Medium:
                 sprite = this.mediumSprite;
-                size = 15;
+                size = 30;
                 break;
             case AsteroidType.Small:
                 sprite = this.smallSprite;
-                size = 10;
+                size = 15;
                 break;
         }
         let asteroid = new Asteroid(startingPosition, startingVelocity, size, sprite);
         this.asteroids.push(asteroid);
+    }
+
+    getAsteroids() {
+        return this.asteroids;
     }
 
     initialize() {

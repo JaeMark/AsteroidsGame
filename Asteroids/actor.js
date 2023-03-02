@@ -38,4 +38,9 @@ class Actor {
       this.position.y = height + this.radius;
     }
   }
+
+  checkCollision(otherActor) {
+    return dist(this.position.x, this.position.y, otherActor.position.x, otherActor.position.y) < 
+           otherActor.radius;
+  }
 }

@@ -3,26 +3,33 @@ let numAsteroids = 5;
 let playerProjectiles = [];
 let asteroidManager;
 
-
 let playerSprite;
 let largeSprite;
 let mediumSprite;
 let smallSprite;
 
 function preload() {
-  playerSprite =  loadImage("assets/PlayerShip.png");
-  largeSprite =  loadImage("assets/AsteroidLarge.png");
-  mediumSprite =  loadImage("assets/AsteroidMedium.png");
-  smallSprite =  loadImage("assets/AsteroidSmall.png");
+  playerSprite = loadImage("assets/PlayerShip.png");
+  largeSprite = loadImage("assets/AsteroidLarge.png");
+  mediumSprite = loadImage("assets/AsteroidMedium.png");
+  smallSprite = loadImage("assets/AsteroidSmall.png");
 }
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
+  frameRate(60);
+  imageMode(CENTER);
+  textAlign(CENTER);
+  rectMode(CENTER);
+
+  textStyle(BOLD);
+  fill(255);
+  textSize(20);
 
   let startingPosition = createVector(width / 2, height / 2);
   let startingVelocity = createVector(0, 0);
   let heading = 0;
-  let spriteSize = 5;
+  let spriteSize = 20;
   let health = 5;
   ship = new Character(
     startingPosition,
@@ -33,11 +40,18 @@ function setup() {
     health
   );
 
-  asteroidManager = new AsteroidManager(numAsteroids, largeSprite, mediumSprite, smallSprite);
+  asteroidManager = new AsteroidManager(
+    numAsteroids,
+    largeSprite,
+    mediumSprite,
+    smallSprite
+  );
 }
 
 function draw() {
   background(220);
+
+  let asteroids = asteroidManager.getAsteroids();
 
   for (let i = 0; i < playerProjectiles.length; i++) {
     playerProjectiles[i].display();
@@ -46,10 +60,15 @@ function draw() {
 
   ship.display();
   ship.update();
-
+  
+  for (let i = 0; i < asteroids.length; i++) {
+    if (ship.checkCollision(asteroids[i])) {
+      ship.respawn();
+    }
+  }
+  
   asteroidManager.display();
   asteroidManager.update();
-
 }
 
 function fire() {

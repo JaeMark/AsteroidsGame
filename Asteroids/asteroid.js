@@ -6,7 +6,7 @@ class Asteroid extends Actor {
   display() {
     push();
       translate(this.position.x, this.position.y);
-      image(this.sprite, 0, 0, this.radius, this.radius);
+      image(this.sprite, 0, 0, this.radius*2, this.radius*2);
     pop();
   }
 }
