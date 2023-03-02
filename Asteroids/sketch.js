@@ -1,7 +1,7 @@
 let ship;
-let asteroids = [];
 let numAsteroids = 5;
 let playerProjectiles = [];
+let asteroidManager;
 
 function setup() {
   createCanvas(400, 400);
@@ -21,19 +21,7 @@ function setup() {
     health
   );
 
-  for (let i = 0; i < numAsteroids; i++) {
-    startingPosition = createVector(random(0, width), random(0, height));
-    startingVelocity = p5.Vector.random2D();
-    spriteSize = 10;
-    asteroids.push(
-      new Asteroid(
-        startingPosition,
-        startingVelocity,
-        spriteSize,
-        sprite
-      )
-    );
-  }
+  asteroidManager = new AsteroidManager(numAsteroids);
 }
 
 function draw() {
@@ -47,10 +35,8 @@ function draw() {
   ship.display();
   ship.update();
 
-  for (let i = 0; i < asteroids.length; i++) {
-    asteroids[i].display();
-    asteroids[i].update();
-  }
+  asteroidManager.display();
+  asteroidManager.update();
 
 }
 

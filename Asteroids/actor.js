@@ -8,6 +8,7 @@ class Actor {
 
   update() {
     this.position.add(this.velocity);
+    this.checkEdges();
   }
 
   display() {
