@@ -3,6 +3,19 @@ let numAsteroids = 5;
 let playerProjectiles = [];
 let asteroidManager;
 
+
+let playerSprite;
+let largeSprite;
+let mediumSprite;
+let smallSprite;
+
+function preload() {
+  playerSprite =  loadImage("assets/PlayerShip.png");
+  largeSprite =  loadImage("assets/AsteroidLarge.png");
+  mediumSprite =  loadImage("assets/AsteroidMedium.png");
+  smallSprite =  loadImage("assets/AsteroidSmall.png");
+}
+
 function setup() {
   createCanvas(400, 400);
 
@@ -10,18 +23,17 @@ function setup() {
   let startingVelocity = createVector(0, 0);
   let heading = 0;
   let spriteSize = 5;
-  let sprite = 10;
   let health = 5;
   ship = new Character(
     startingPosition,
     startingVelocity,
     heading,
     spriteSize,
-    sprite,
+    playerSprite,
     health
   );
 
-  asteroidManager = new AsteroidManager(numAsteroids);
+  asteroidManager = new AsteroidManager(numAsteroids, largeSprite, mediumSprite, smallSprite);
 }
 
 function draw() {

@@ -5,8 +5,11 @@ const AsteroidType = {
 }
 
 class AsteroidManager {
-    constructor(startingNumAsteroid) {
+    constructor(startingNumAsteroid, largeSprite, mediumSprite, smallSprite) {
         this.numAsteroid = startingNumAsteroid;
+        this.largeSprite = largeSprite;
+        this.mediumSprite = mediumSprite;
+        this.smallSprite = smallSprite;
         this.asteroids = [];
         this.initialize();
 
@@ -31,15 +34,15 @@ class AsteroidManager {
         let sprite;
         switch (type) {
             case AsteroidType.Large:
-                sprite = loadImage("assets/AsteroidLarge.png");
+                sprite = this.largeSprite;
                 size = 20;
                 break;
             case AsteroidType.Medium:
-                sprite = loadImage("assets/AsteroidMedium.png");
+                sprite = this.mediumSprite;
                 size = 15;
                 break;
             case AsteroidType.Small:
-                sprite = loadImage("assets/AsteroidSmall.png");
+                sprite = this.smallSprite;
                 size = 10;
                 break;
         }
@@ -52,5 +55,4 @@ class AsteroidManager {
             this.add(AsteroidType.Large);
         }
     }
-    
 }

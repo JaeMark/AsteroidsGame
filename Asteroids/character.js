@@ -38,10 +38,14 @@ class Character extends Actor {
 
   display() {
     push();
-      translate(this.position.x, this.position.y);
+    translate(this.position.x, this.position.y);
+    image(this.sprite, 0, 0, this.radius, this.radius);
+    /*
+      
       this.heading += this.rotation;
       rotate(this.heading + PI / 2);
       super.display();
+      */
     pop();
   }
 
