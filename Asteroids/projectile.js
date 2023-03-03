@@ -8,4 +8,9 @@ class Projectile extends Actor {
       circle(this.position.x, this.position.y, this.radius);
     pop();
   }
+  
+  destoryProjectile() {
+    this.position = createVector(-100, -100);
+    this.velocity = createVector(0, 0);
+  }
 }

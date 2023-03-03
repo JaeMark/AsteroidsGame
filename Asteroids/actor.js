@@ -13,15 +13,15 @@ class Actor {
 
   display() {
     push();
-			noFill();
-			triangle(
-				-this.radius,
-				this.radius,
-				0,
-				-this.radius,
-				this.radius,
-				this.radius
-			);
+    noFill();
+    triangle(
+      -this.radius,
+      this.radius,
+      0,
+      -this.radius,
+      this.radius,
+      this.radius
+    );
     pop();
   }
 
@@ -40,7 +40,14 @@ class Actor {
   }
 
   checkCollision(otherActor) {
-    return dist(this.position.x, this.position.y, otherActor.position.x, otherActor.position.y) < 
-           otherActor.radius;
+    return (
+      dist(
+        this.position.x,
+        this.position.y,
+        otherActor.position.x,
+        otherActor.position.y
+      ) <
+      this.radius + otherActor.radius
+    );
   }
 }

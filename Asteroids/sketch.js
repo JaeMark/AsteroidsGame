@@ -53,20 +53,26 @@ function draw() {
 
   let asteroids = asteroidManager.getAsteroids();
 
-  for (let i = 0; i < playerProjectiles.length; i++) {
-    playerProjectiles[i].display();
-    playerProjectiles[i].update();
-  }
-
-  ship.display();
-  ship.update();
-  
   for (let i = 0; i < asteroids.length; i++) {
     if (ship.checkCollision(asteroids[i])) {
       ship.respawn();
     }
   }
-  
+
+  for (let i = 0; i < playerProjectiles.length; i++) {
+    playerProjectiles[i].display();
+    playerProjectiles[i].update();
+    for (let j = 0; j < asteroids.length; j++) {
+      if (asteroids[j].checkCollision(playerProjectiles[i])) {
+        playerProjectiles[i].destoryProjectile();
+        break;
+      }
+    }
+  }
+
+  ship.display();
+  ship.update();
+
   asteroidManager.display();
   asteroidManager.update();
 }
