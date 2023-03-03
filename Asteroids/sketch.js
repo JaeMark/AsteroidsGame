@@ -52,7 +52,7 @@ function draw() {
   background(220);
 
   let asteroids = asteroidManager.getAsteroids();
-
+  
   for (let i = 0; i < asteroids.length; i++) {
     if (ship.checkCollision(asteroids[i])) {
       ship.respawn();
@@ -65,11 +65,12 @@ function draw() {
     for (let j = 0; j < asteroids.length; j++) {
       if (asteroids[j].checkCollision(playerProjectiles[i])) {
         playerProjectiles[i].destoryProjectile();
+        asteroidManager.breakup(j);
         break;
       }
     }
   }
-
+  
   ship.display();
   ship.update();
 
