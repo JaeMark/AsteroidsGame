@@ -4,15 +4,21 @@ let playerProjectiles = [];
 let asteroidManager;
 
 let playerSprite;
+let explosionSprite;
 let largeSprite;
 let mediumSprite;
 let smallSprite;
+let enemySpriteSmall;
+let enemySpriteLarge;
 
 function preload() {
   playerSprite = loadImage("assets/PlayerShip.png");
+  explosionSprite = loadImage("assets/Explosion.png");
   largeSprite = loadImage("assets/AsteroidLarge.png");
   mediumSprite = loadImage("assets/AsteroidMedium.png");
   smallSprite = loadImage("assets/AsteroidSmall.png");
+  enemySpriteSmall = loadImage("assets/EnemyShipSmall.png");
+  enemySpriteLarge = loadImage("assets/EnemyShipLarge.png");
 }
 
 const GameState = {
