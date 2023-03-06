@@ -34,14 +34,13 @@ class AsteroidManager {
 
   breakup(asteroidIndex) {
     if (asteroidIndex < this.asteroids.length) {
-      let asteroidType = this.asteroids[asteroidIndex].radius;
+      let asteroidRadius = this.asteroids[asteroidIndex].radius;
       let asteroidPosition = this.asteroids[asteroidIndex].position;
-      switch (asteroidType) {
+      switch (asteroidRadius) {
         case AsteroidSize.Large:
-          this.asteroids.splice(asteroidIndex, 1);
           this.asteroids.push(
             new Asteroid(
-              asteroidPosition,
+              createVector(asteroidPosition.x, asteroidPosition.y),
               p5.Vector.random2D(),
               AsteroidSize.Medium,
               this.mediumSprite
@@ -49,7 +48,7 @@ class AsteroidManager {
           );
           this.asteroids.push(
             new Asteroid(
-              asteroidPosition,
+              createVector(asteroidPosition.x, asteroidPosition.y),
               p5.Vector.random2D(),
               AsteroidSize.Medium,
               this.mediumSprite
@@ -57,10 +56,9 @@ class AsteroidManager {
           );
           break;
         case AsteroidSize.Medium:
-          this.asteroids.splice(asteroidIndex, 1);
           this.asteroids.push(
             new Asteroid(
-              asteroidPosition,
+              createVector(asteroidPosition.x, asteroidPosition.y),
               p5.Vector.random2D(),
               AsteroidSize.Small,
               this.smallSprite
@@ -68,7 +66,7 @@ class AsteroidManager {
           );
           this.asteroids.push(
             new Asteroid(
-              asteroidPosition,
+              createVector(asteroidPosition.x, asteroidPosition.y),
               p5.Vector.random2D(),
               AsteroidSize.Small,
               this.smallSprite
@@ -76,9 +74,10 @@ class AsteroidManager {
           );
           break;
         case AsteroidSize.Small:
-          this.asteroids.splice(asteroidIndex, 1);
           break;
       }
+      this.asteroids.splice(asteroidIndex, 1);
+      print(this.asteroids);
     }
   }
 
