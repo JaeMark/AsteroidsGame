@@ -15,6 +15,13 @@ function preload() {
   smallSprite = loadImage("assets/AsteroidSmall.png");
 }
 
+const GameState = {
+  Start: "start",
+  Playing: "playing",
+  GameOver: "gameover",
+};
+let gameState = GameState.Start;
+
 function setup() {
   createCanvas(800, 800);
   frameRate(60);
@@ -24,6 +31,13 @@ function setup() {
   textStyle(BOLD);
   fill(255);
   textSize(20);
+
+  // Setup the start button
+  textAlign(CENTER);
+  startButton = createButton("Start Game");
+  startButton.size(200, 75);
+  startButton.position(width / 2 - 100, height / 2 - 37.5);
+  startButton.mousePressed(startGame);
 
   let startingPosition = createVector(width / 2, height / 2);
   let startingVelocity = createVector(0, 0);
@@ -50,6 +64,44 @@ function setup() {
 function draw() {
   background(220);
 
+  switch (gameState) {
+    case GameState.Start:
+      push();
+      textAlign(CENTER);
+      textSize(100);
+      text("Asteroids", width / 2, 225);
+      pop();
+      break;
+    case GameState.Playing:
+      playingGameStateUpdate();
+      break;
+    case GameState.GameOver:
+      push();
+      translate(width / 2, height / 2);
+      fill(255, 255, 255, 90);
+      rect(0, -5, 225, 125);
+      fill(0);
+      textSize(40);
+      text("YOU DIED!", 0, -10);
+      textSize(15);
+      text("Adventurers Eaten: " + player.score, 0, 20);
+      pop();
+      break;
+    default:
+      console.log("Game mode: " + gameState + " not defined");
+  }
+
+  displayScore();
+  displayHealth();
+}
+
+// Starts the game
+function startGame() {
+  gameState = GameState.Playing;
+  startButton.hide();
+}
+
+function playingGameStateUpdate() {
   let asteroids = asteroidManager.getAsteroids();
 
   for (let i = 0; i < asteroids.length; i++) {
@@ -76,14 +128,14 @@ function draw() {
 
   asteroidManager.display();
   asteroidManager.update();
-
-  displayScore();
-  displayHealth();
 }
 
 function displayScore() {
   let scoreText = "Score: " + ship.score;
+  push();
+  textAlign(LEFT);
   text(scoreText, 20, 30);
+  pop();
 }
 
 function displayHealth() {
