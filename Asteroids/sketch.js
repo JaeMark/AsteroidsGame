@@ -16,10 +16,10 @@ function preload() {
 }
 
 const GameState = {
-  Start: "start",
-  Playing: "playing",
-  GameOver: "gameover",
-};
+	Start: "start",
+	Playing: "playing",
+	GameOver: "gameover"
+}
 let gameState = GameState.Start;
 
 function setup() {
@@ -31,12 +31,12 @@ function setup() {
   textStyle(BOLD);
   fill(255);
   textSize(20);
-
+  
   // Setup the start button
   textAlign(CENTER);
   startButton = createButton("Start Game");
   startButton.size(200, 75);
-  startButton.position(width / 2 - 100, height / 2 - 37.5);
+  startButton.position(width/2-100, height/2-37.5);
   startButton.mousePressed(startGame);
 
   let startingPosition = createVector(width / 2, height / 2);
@@ -65,11 +65,11 @@ function draw() {
   background(220);
 
   switch (gameState) {
-    case GameState.Start:
+    case GameState.Start:  
       push();
-      textAlign(CENTER);
-      textSize(100);
-      text("Asteroids", width / 2, 225);
+        textAlign(CENTER);
+        textSize(100);
+        text("Asteroids", width/2, 225);
       pop();
       break;
     case GameState.Playing:
@@ -77,33 +77,33 @@ function draw() {
       break;
     case GameState.GameOver:
       push();
-      translate(width / 2, height / 2);
-      fill(255, 255, 255, 90);
-      rect(0, -5, 225, 125);
-      fill(0);
-      textSize(40);
-      text("YOU DIED!", 0, -10);
-      textSize(15);
-      text("Adventurers Eaten: " + player.score, 0, 20);
+        translate(width/2, height/2);
+        textAlign(CENTER);
+        fill(255, 255, 255, 90);
+        rect(0, -5, 225, 125);
+        fill(0);
+        textSize(40);
+        text("YOU LOSE!", 0, 0);
       pop();
       break;
     default:
       console.log("Game mode: " + gameState + " not defined");
-  }
-
+  } 
+  
   displayScore();
   displayHealth();
+  
 }
 
 // Starts the game
 function startGame() {
   gameState = GameState.Playing;
   startButton.hide();
-}
+}  
 
 function playingGameStateUpdate() {
   let asteroids = asteroidManager.getAsteroids();
-
+  
   for (let i = 0; i < asteroids.length; i++) {
     if (ship.checkCollision(asteroids[i])) {
       ship.respawn();
@@ -122,7 +122,7 @@ function playingGameStateUpdate() {
       }
     }
   }
-
+  
   ship.display();
   ship.update();
 
@@ -133,16 +133,16 @@ function playingGameStateUpdate() {
 function displayScore() {
   let scoreText = "Score: " + ship.score;
   push();
-  textAlign(LEFT);
-  text(scoreText, 20, 30);
+    textAlign(LEFT);
+    text(scoreText, 20, 30);
   pop();
 }
 
 function displayHealth() {
   let scoreText = "Health: " + ship.health;
   push();
-  textAlign(RIGHT);
-  text(scoreText, width - 20, 30);
+    textAlign(RIGHT);
+    text(scoreText, width-20, 30);
   pop();
 }
 
@@ -172,6 +172,11 @@ function keyPressed() {
   if (keyIsDown(32)) {
     // The space key is being pressed.
     fire();
+  }
+  
+  if (keyIsDown(83)) {
+    // The 's' key is being pressed.
+    ship.teleport();
   }
 
   if (keyIsDown(87)) {
