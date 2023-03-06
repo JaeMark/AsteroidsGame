@@ -78,6 +78,7 @@ function draw() {
   asteroidManager.update();
 
   displayScore();
+  displayHealth();
 }
 
 function displayScore() {
@@ -85,7 +86,13 @@ function displayScore() {
   text(scoreText, 20, 30);
 }
 
-function displayHealth() {}
+function displayHealth() {
+  let scoreText = "Health: " + ship.health;
+  push();
+  textAlign(RIGHT);
+  text(scoreText, width - 20, 30);
+  pop();
+}
 
 function fire() {
   let startingPosition = createVector(ship.position.x, ship.position.y);
