@@ -9,6 +9,7 @@ class Player extends Actor {
   ) {
     super(startingPosition, startingVelocity, radius, sprite);
     this.health = health;
+    this.score = 0;
     this.heading = heading;
     this.rotation = 0;
     this.isEngineOne = false;
@@ -35,6 +36,10 @@ class Player extends Actor {
     super.update();
     this.velocity.mult(0.97);
   }
+  
+  updateScore(delta) {
+    this.score += delta;
+  }
 
   respawn() {
     --this.health;
@@ -43,11 +48,11 @@ class Player extends Actor {
 
   display() {
     push();
-    translate(this.position.x, this.position.y);
-    this.heading += this.rotation;
-    rotate(this.heading + PI / 2);
-    image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
-    super.display();
+      translate(this.position.x, this.position.y);
+      this.heading += this.rotation;
+      rotate(this.heading + PI / 2);
+      image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
+      super.display();
     pop();
   }
 

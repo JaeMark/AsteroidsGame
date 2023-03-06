@@ -19,7 +19,6 @@ function setup() {
   createCanvas(800, 800);
   frameRate(60);
   imageMode(CENTER);
-  textAlign(CENTER);
   rectMode(CENTER);
 
   textStyle(BOLD);
@@ -65,6 +64,7 @@ function draw() {
     for (let j = 0; j < asteroids.length; j++) {
       if (asteroids[j].checkCollision(playerProjectiles[i])) {
         playerProjectiles[i].destoryProjectile();
+        ship.updateScore(asteroidManager.getScore(j));
         asteroidManager.breakup(j);
         break;
       }
@@ -76,7 +76,16 @@ function draw() {
 
   asteroidManager.display();
   asteroidManager.update();
+
+  displayScore();
 }
+
+function displayScore() {
+  let scoreText = "Score: " + ship.score;
+  text(scoreText, 20, 30);
+}
+
+function displayHealth() {}
 
 function fire() {
   let startingPosition = createVector(ship.position.x, ship.position.y);
