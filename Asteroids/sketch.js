@@ -31,7 +31,7 @@ function setup() {
   let heading = 0;
   let spriteSize = 20;
   let health = 5;
-  ship = new Character(
+  ship = new Player(
     startingPosition,
     startingVelocity,
     heading,
@@ -52,7 +52,7 @@ function draw() {
   background(220);
 
   let asteroids = asteroidManager.getAsteroids();
-  
+
   for (let i = 0; i < asteroids.length; i++) {
     if (ship.checkCollision(asteroids[i])) {
       ship.respawn();
@@ -70,7 +70,7 @@ function draw() {
       }
     }
   }
-  
+
   ship.display();
   ship.update();
 

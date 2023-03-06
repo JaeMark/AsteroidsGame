@@ -77,7 +77,6 @@ class AsteroidManager {
           break;
       }
       this.asteroids.splice(asteroidIndex, 1);
-      print(this.asteroids);
     }
   }
 
