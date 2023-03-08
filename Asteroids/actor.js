@@ -12,7 +12,7 @@ class Actor {
   }
 
   display() {
-    image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
+    image(this.sprite, this.position.x, this.position.y, this.radius * 2, this.radius * 2);
   }
 
   checkEdges() {

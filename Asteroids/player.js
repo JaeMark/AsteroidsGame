@@ -99,6 +99,4 @@ class Player extends Actor {
       }
     }
   }
-
-  shoot() {}
 }
