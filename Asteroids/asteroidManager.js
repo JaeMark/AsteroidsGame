@@ -54,28 +54,12 @@ class AsteroidManager {
         let newAsteroid = [];
         switch (asteroidRadius) {
             case AsteroidSize.Large:
-                this.asteroids.push(new Asteroid(
-                                    createVector(asteroidPosition.x, asteroidPosition.y), 
-                                    p5.Vector.random2D(), 
-                                    AsteroidSize.Medium, 
-                                    this.mediumSprite));
-                this.asteroids.push(new Asteroid(
-                                    createVector(asteroidPosition.x, asteroidPosition.y),
-                                    p5.Vector.random2D(), 
-                                    AsteroidSize.Medium, 
-                                    this.mediumSprite));
+                this.addAsteroid(createVector(asteroidPosition.x, asteroidPosition.y), AsteroidSize.Medium);
+                this.addAsteroid(createVector(asteroidPosition.x, asteroidPosition.y), AsteroidSize.Medium);
                 break;
             case AsteroidSize.Medium:
-                this.asteroids.push(new Asteroid(
-                                    createVector(asteroidPosition.x, asteroidPosition.y), 
-                                    p5.Vector.random2D(), 
-                                    AsteroidSize.Small, 
-                                    this.smallSprite));
-                this.asteroids.push(new Asteroid(
-                                    createVector(asteroidPosition.x, asteroidPosition.y), 
-                                    p5.Vector.random2D(), 
-                                    AsteroidSize.Small, 
-                                    this.smallSprite));
+                this.addAsteroid(createVector(asteroidPosition.x, asteroidPosition.y), AsteroidSize.Small);
+                this.addAsteroid(createVector(asteroidPosition.x, asteroidPosition.y), AsteroidSize.Small);
                 break;
             case AsteroidSize.Small:
                 break;
@@ -83,23 +67,33 @@ class AsteroidManager {
         this.asteroids.splice(asteroidIndex, 1);
       }
     }
-
-    add(asteroidSize) {
-        let startingPosition = createVector(random(0, width), random(0, height));
-        let startingVelocity = p5.Vector.random2D();
+  
+    addAsteroid(startingPosition, asteroidSize) {
+        let startingVelocity; 
         let sprite;
         switch (asteroidSize) {
             case AsteroidSize.Large:
+                startingVelocity = p5.Vector.random2D();
                 sprite = this.largeSprite;
                 break;
             case AsteroidSize.Medium:
+                startingVelocity = p5.Vector.random2D();
                 sprite = this.mediumSprite;
                 break;
             case AsteroidSize.Small:
+                startingVelocity = p5.Vector.random2D();
                 sprite = this.smallSprite;
                 break;
         }
         let asteroid = new Asteroid(startingPosition, startingVelocity, asteroidSize, sprite);
+        this.asteroids.push(asteroid);
+    }
+
+    newAsteroid() {
+        let startingPosition = createVector(random(0, width), random(0, height));
+        let startingVelocity = p5.Vector.random2D();
+        let sprite;
+        let asteroid = new Asteroid(startingPosition, startingVelocity, AsteroidSize.Large, this.largeSprite);
         this.asteroids.push(asteroid);
     }
 
@@ -109,7 +103,7 @@ class AsteroidManager {
 
     initialize() {
         for (let i = 0; i < this.numAsteroid; i++) {
-            this.add(AsteroidSize.Large);
+            this.addAsteroid(createVector(random(width), random(height)), AsteroidSize.Large)
         }
     }
 }
