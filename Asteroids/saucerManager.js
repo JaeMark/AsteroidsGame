@@ -1,7 +1,7 @@
 const SaucerSize = {
-  Large: 50,
-  Small: 40,
-};
+	Large: 25,
+	Small: 15
+}
 
 class SaucerManager {
   constructor(largeSprite, smallSprite, smallSaucerSpawnRate) {
@@ -10,52 +10,50 @@ class SaucerManager {
     this.smallSaucerSpawnRate = smallSaucerSpawnRate;
     this.saucers = [];
   }
-
+  
   spawnSaucer() {
     let size = SaucerSize.Large;
     let randomNum = random();
-    if (randomNum < this.smallSaucerSpawnRate) {
+    if(randomNum < this.smallSaucerSpawnRate) {
       size = SaucerSize.Small;
     }
-
+    
     // spawn at the boundary
-    let spawnLocation = createVector(
-      floor(random(2) * width, floor(random(2) * height))
-    );
-
+    let spawnLocation = createVector(floor(random(2) * width, 
+                                     floor(random(2) * height)));
+    
     switch (size) {
       case SaucerSize.Large:
-        this.saucers.push(
-          new Saucer(
-            spawnLocation,
-            p5.Vector.random2D(),
-            size,
-            this.largeSprite
-          )
-        );
+         this.saucers.push(new Saucer(
+                      spawnLocation, 
+                      p5.Vector.random2D(),
+                      size,
+                      this.largeSprite));
         break;
       case SaucerSize.Small:
-        this.saucers.push(
-          new Saucer(
-            spawnLocation,
-            p5.Vector.random2D(),
-            size,
-            this.smallSprite
-          )
-        );
-        break;
+         this.saucers.push(new Saucer(
+                      spawnLocation, 
+                      p5.Vector.random2D(),
+                      size,
+                      this.smallSprite));
+      break;
     }
   }
-
+  
   display() {
     for (let i = 0; i < this.saucers.length; i++) {
-      this.saucers[i].display();
+        this.saucers[i].display();
     }
   }
-
+  
   update() {
     for (let i = 0; i < this.saucers.length; i++) {
-      this.saucers[i].update();
+        this.saucers[i].update();
     }
   }
+  
+  destorySaucer(index) {
+    this.saucers.splice(index, 1);
+  }
 }
+                    
