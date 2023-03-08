@@ -13,9 +13,7 @@ class Projectile extends Actor {
   }
 
   display() {
-    push();
     circle(this.position.x, this.position.y, this.radius);
-    pop();
   }
 
   destoryProjectile() {
