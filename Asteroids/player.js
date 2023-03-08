@@ -10,7 +10,6 @@ class Player extends Actor {
     super(startingPosition, startingVelocity, radius, sprite);
     this.health = health;
     this.heading = heading;
-    this.projectileManager = projectileManager;
     this.projectiles = [];
     this.score = 0;
     this.rotation = 0;

@@ -3,6 +3,11 @@ let numAsteroids = 5;
 let playerProjectiles = [];
 let asteroidManager;
 
+let saucerManager;
+let smallSaucerSpawnProb = 0.25;
+let saucerSpawnInterval = 100;
+let nextSaucerSpawnInterval = saucerSpawnInterval;
+
 let playerSprite;
 let explosionSprite;
 let largeSprite;
@@ -59,12 +64,17 @@ function setup() {
     health
   );
   
-
   asteroidManager = new AsteroidManager(
     numAsteroids,
     largeSprite,
     mediumSprite,
     smallSprite
+  );
+  
+  saucerManager = new SaucerManager(
+    enemySpriteLarge,
+    enemySpriteSmall,
+    smallSaucerSpawnProb
   );
 }
 
@@ -124,23 +134,18 @@ function playingGameStateUpdate() {
       ship.respawn();
     }
   }
-/*
-  for (let i = 0; i < playerProjectiles.length; i++) {
-    playerProjectiles[i].display();
-    playerProjectiles[i].update();
-    for (let j = 0; j < asteroids.length; j++) {
-      if (asteroids[j].checkCollision(playerProjectiles[i])) {
-        playerProjectiles[i].destoryProjectile();
-        ship.updateScore(asteroidManager.getScore(j));
-        asteroidManager.breakup(j);
-        break;
-      }
-    }
-  }
-  */
+
   ship.checkProjectileCollision(asteroidManager);
   ship.display();
   ship.update();
+  
+  if(ship.score > nextSaucerSpawnInterval) {
+    nextSaucerSpawnInterval += saucerSpawnInterval;
+    saucerManager.spawnSaucer();
+  }
+  
+  saucerManager.display();
+  saucerManager.update();
 
   asteroidManager.display();
   asteroidManager.update();
