@@ -5,8 +5,7 @@ class Player extends Actor {
     heading,
     radius,
     sprite,
-    health,
-    projectileManager
+    health
   ) {
     super(startingPosition, startingVelocity, radius, sprite);
     this.health = health;
