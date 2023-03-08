@@ -13,6 +13,8 @@ class Player extends Actor {
     this.heading = heading;
     this.rotation = 0;
     this.isEngineOne = false;
+    this.extraHealthThreshold = 10000;
+    this.nextScoreThreshold = this.extraHealthThreshold;
   }
 
   isDead() {
@@ -36,27 +38,33 @@ class Player extends Actor {
     super.update();
     this.velocity.mult(0.97);
   }
-
+  
   updateScore(delta) {
     this.score += delta;
+    if(this.score > this.nextScoreThreshold) {
+      ++this.health;
+      this.nextScoreThreshold += this.extraHealthThreshold;
+    }
   }
-
+  
   teleport() {
-    this.position = createVector(random(0, width), random(0, height));
+    this.position = (createVector(random(0, width), random(0, height)));
   }
 
   respawn() {
     --this.health;
-    this.position = createVector(width / 2, height / 2);
+    if(!this.isDead()) {
+      this.position = createVector(width / 2, height / 2);
+    }
   }
 
   display() {
     push();
-    translate(this.position.x, this.position.y);
-    this.heading += this.rotation;
-    rotate(this.heading + PI / 2);
-    image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
-    super.display();
+      translate(this.position.x, this.position.y);
+      this.heading += this.rotation;
+      rotate(this.heading + PI / 2);
+      image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
+      super.display();
     pop();
   }
 
