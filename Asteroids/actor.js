@@ -12,17 +12,7 @@ class Actor {
   }
 
   display() {
-    push();
-    noFill();
-    triangle(
-      -this.radius,
-      this.radius,
-      0,
-      -this.radius,
-      this.radius,
-      this.radius
-    );
-    pop();
+    image(this.sprite, 0, 0, this.radius * 2, this.radius * 2);
   }
 
   checkEdges() {
@@ -39,15 +29,10 @@ class Actor {
     }
   }
 
-  checkCollision(otherActor) {
-    return (
-      dist(
-        this.position.x,
-        this.position.y,
-        otherActor.position.x,
-        otherActor.position.y
-      ) <
-      this.radius + otherActor.radius
-    );
+   
+  checkCollision(other) {
+    return dist(this.position.x, this.position.y, 
+                other.position.x, other.position.y) < 
+           this.radius + other.radius;
   }
 }
