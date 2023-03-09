@@ -67,5 +67,22 @@ class SaucerManager {
     return 0;
   }
   
+  checkProjectileCollision(asteroidManager, player) {
+    for (let i = 0; i < this.saucers.length; i++) {
+        this.saucers[i].checkProjectileCollision(asteroidManager, player);
+    }
+  }
+  
+  displayProjectile() {
+    for (let i = 0; i < this.saucers.length; i++) {
+        this.saucers[i].displayProjectile();
+    }
+  }
+  
+  updateProjectile() {
+    for (let i = 0; i < this.saucers.length; i++) {
+        this.saucers[i].updateProjectile();
+    }
+  }
 }
                     
