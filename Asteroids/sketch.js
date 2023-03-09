@@ -1,5 +1,5 @@
 let ship;
-let numAsteroids = 5;
+let numAsteroids = 3;
 let playerProjectiles = [];
 let asteroidManager;
 
@@ -130,32 +130,29 @@ function playingGameStateUpdate() {
   
   let asteroids = asteroidManager.asteroids;
   let saucers = saucerManager.saucers;
-  
-  saucerManager.checkCollisions(asteroids);
-  
-  ship.checkCollisions(asteroids);
-  ship.checkCollisions(saucers);
 
   ship.checkProjectileCollision(asteroidManager, saucerManager);
   ship.displayProjectile();
   ship.updateProjectile();
   
+  ship.checkCollisions(asteroids);
+  ship.checkCollisions(saucers);
   ship.display();
   ship.update();
-  
   
   if(ship.score > nextSaucerSpawnInterval) {
     nextSaucerSpawnInterval += saucerSpawnInterval;
     saucerManager.spawnSaucer();
   }
-  
+
   saucerManager.checkProjectileCollision(asteroidManager, ship);
   saucerManager.displayProjectile();
   saucerManager.updateProjectile();
   
+  saucerManager.checkCollisions(asteroids);
   saucerManager.display();
   saucerManager.update();
-
+  
   asteroidManager.display();
   asteroidManager.update();
 }
