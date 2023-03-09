@@ -39,40 +39,48 @@ class Player extends Actor {
     super.update();
     this.velocity.mult(0.97);
   }
-  
+
   updateScore(delta) {
     this.score += delta;
-    if(this.score > this.nextScoreThreshold) {
+    if (this.score > this.nextScoreThreshold) {
       ++this.health;
       this.nextScoreThreshold += this.extraHealthThreshold;
     }
   }
-  
+
   teleport() {
-    this.position = (createVector(random(0, width), random(0, height)));
+    this.position = createVector(random(0, width), random(0, height));
   }
 
   respawn() {
     --this.health;
-    if(!this.isDead()) {
+    if (!this.isDead()) {
       this.position = createVector(width / 2, height / 2);
     }
   }
 
   display() {
     push();
-      translate(this.position.x, this.position.y);
-      this.heading += this.rotation;
-      rotate(this.heading + PI / 2);
-      translate(-this.position.x, -this.position.y);
-      super.display();
+    translate(this.position.x, this.position.y);
+    this.heading += this.rotation;
+    rotate(this.heading + PI / 2);
+    translate(-this.position.x, -this.position.y);
+    super.display();
     pop();
   }
 
   setRotation(angle) {
     this.rotation = angle;
   }
-  
+
+  checkCollisions(actors) {
+    for (let i = 0; i < actors.length; i++) {
+      if (this.checkCollision(actors[i])) {
+        ship.respawn();
+      }
+    }
+  }
+
   fire() {
     let startingPosition = createVector(this.position.x, this.position.y);
     let startingVelocity = p5.Vector.fromAngle(this.heading);
@@ -83,7 +91,7 @@ class Player extends Actor {
       new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
     );
   }
-  
+
   checkProjectileCollision(asteroidManager, saucerManager) {
     let asteroids = asteroidManager.asteroids;
     let saucers = saucerManager.saucers;
@@ -96,7 +104,7 @@ class Player extends Actor {
           break;
         }
       }
-      
+
       for (let j = 0; j < saucers.length; j++) {
         if (saucers[j].checkCollision(this.projectiles[i])) {
           this.projectiles[i].destoryProjectile();
@@ -107,13 +115,13 @@ class Player extends Actor {
       }
     }
   }
-  
+
   displayProjectile() {
     for (let i = 0; i < this.projectiles.length; i++) {
       this.projectiles[i].display();
     }
   }
-  
+
   updateProjectile() {
     for (let i = 0; i < this.projectiles.length; i++) {
       this.projectiles[i].update();

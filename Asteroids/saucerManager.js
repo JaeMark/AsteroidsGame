@@ -67,6 +67,17 @@ class SaucerManager {
     return 0;
   }
   
+  checkCollisions(actors) {
+    for (let i = 0; i < actors.length; i++) {
+      for(let j = 0; j < this.saucers.length; j++) {
+        if (this.saucers[j].checkCollision(actors[i])) {
+          this.destroySaucer(j);
+          break;
+        }
+      }
+    }
+  }
+  
   checkProjectileCollision(asteroidManager, player) {
     for (let i = 0; i < this.saucers.length; i++) {
         this.saucers[i].checkProjectileCollision(asteroidManager, player);
