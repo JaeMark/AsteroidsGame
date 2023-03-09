@@ -52,8 +52,20 @@ class SaucerManager {
     }
   }
   
-  destorySaucer(index) {
+  destroySaucer(index) {
     this.saucers.splice(index, 1);
   }
+  
+   getScore(index) {
+    let saucerSize = this.saucers[index].radius;
+    switch (saucerSize) {
+        case SaucerSize.Large:
+            return 200;
+        case SaucerSize.Small:
+            return 1000;
+    }
+    return 0;
+  }
+  
 }
                     

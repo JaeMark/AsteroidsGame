@@ -84,11 +84,10 @@ class Player extends Actor {
     );
   }
   
-  checkProjectileCollision(asteroidManager) {
-    let asteroids = asteroidManager.getAsteroids();
+  checkProjectileCollision(asteroidManager, saucerManager) {
+    let asteroids = asteroidManager.asteroids;
+    let saucers = saucerManager.saucers;
     for (let i = 0; i < this.projectiles.length; i++) {
-      this.projectiles[i].display();
-      this.projectiles[i].update();
       for (let j = 0; j < asteroids.length; j++) {
         if (asteroids[j].checkCollision(this.projectiles[i])) {
           this.projectiles[i].destoryProjectile();
@@ -97,6 +96,27 @@ class Player extends Actor {
           break;
         }
       }
+      
+      for (let j = 0; j < saucers.length; j++) {
+        if (saucers[j].checkCollision(this.projectiles[i])) {
+          this.projectiles[i].destoryProjectile();
+          this.updateScore(saucerManager.getScore(j));
+          saucerManager.destroySaucer(j);
+          break;
+        }
+      }
+    }
+  }
+  
+  displayProjectile() {
+    for (let i = 0; i < this.projectiles.length; i++) {
+      this.projectiles[i].display();
+    }
+  }
+  
+  updateProjectile() {
+    for (let i = 0; i < this.projectiles.length; i++) {
+      this.projectiles[i].update();
     }
   }
 }

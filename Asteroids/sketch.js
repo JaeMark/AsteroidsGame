@@ -136,14 +136,18 @@ function playingGameStateUpdate() {
     }
     for(let j = 0; j < saucers.length; j++) {
       if (saucers[j].checkCollision(asteroids[i])) {
-        saucerManager.destorySaucer(j);
+        saucerManager.destroySaucer(j);
       }
     }
   }
 
-  ship.checkProjectileCollision(asteroidManager);
+  ship.checkProjectileCollision(asteroidManager, saucerManager);
+  ship.displayProjectile();
+  ship.updateProjectile();
+  
   ship.display();
   ship.update();
+  
   
   if(ship.score > nextSaucerSpawnInterval) {
     nextSaucerSpawnInterval += saucerSpawnInterval;
