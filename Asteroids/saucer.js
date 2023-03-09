@@ -7,7 +7,7 @@ class Saucer extends Actor {
     super(startingPosition, startingVelocity, radius, sprite);
     this.projectiles = [];
     this.fireInterval = 2 * getFrameRate();
-    this.nextFireFrame = this.fireInterval;
+    this.nextFireFrame = frameCount + this.fireInterval;
   }
   
   update() {

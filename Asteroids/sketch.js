@@ -4,8 +4,8 @@ let playerProjectiles = [];
 let asteroidManager;
 
 let saucerManager;
-let smallSaucerSpawnProb = 0.25;
-let saucerSpawnInterval = 100;
+let smallSaucerSpawnProb = 0.1;
+let saucerSpawnInterval = 500;
 let nextSaucerSpawnInterval = saucerSpawnInterval;
 
 let playerSprite;
