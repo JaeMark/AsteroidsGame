@@ -13,7 +13,7 @@ class Player extends Actor {
     this.projectiles = [];
     this.score = 0;
     this.rotation = 0;
-    this.isEngineOne = false;
+    this.isEngineOn = false;
     this.extraHealthThreshold = 10000;
     this.nextScoreThreshold = this.extraHealthThreshold;
   }
@@ -90,6 +90,12 @@ class Player extends Actor {
     this.projectiles.push(
       new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
     );
+
+    if (!this.isEngineOn) {
+      let force = p5.Vector.fromAngle(this.heading + PI);
+      force.mult(0.75);
+      this.velocity.add(force);
+    }
   }
 
   checkProjectileCollision(asteroidManager, saucerManager) {
