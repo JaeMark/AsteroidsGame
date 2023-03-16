@@ -1,10 +1,10 @@
 let ship;
-let numAsteroids = 5;
+let numAsteroids = 3;
 let playerProjectiles = [];
 let asteroidManager;
 
 let saucerManager;
-let smallSaucerSpawnProb = 0.1;
+let smallSaucerSpawnProb = 1;
 let saucerSpawnInterval = 500;
 let nextSaucerSpawnInterval = saucerSpawnInterval;
 
@@ -15,6 +15,14 @@ let mediumSprite;
 let smallSprite;
 let enemySpriteSmall;
 let enemySpriteLarge;
+
+let shakeIntensity = 2.5;
+let shakeDuration = 30;
+let shakeStartFrame = 0;
+let isScreenShakeActive = false;
+
+let startButton;
+let restartButton;
 
 function preload() {
   playerSprite = loadImage("assets/PlayerShip.png");
@@ -50,69 +58,58 @@ function setup() {
   startButton.position(width/2-100, height/2-37.5);
   startButton.mousePressed(startGame);
   
-  let startingPosition = createVector(width / 2, height / 2);
-  let startingVelocity = createVector(0, 0);
-  let heading = 0;
-  let spriteSize = 20;
-  let health = 5;
-  ship = new Player(
-    startingPosition,
-    startingVelocity,
-    heading,
-    spriteSize,
-    playerSprite,
-    health
-  );
+    
+  // Setup the restart button
+  restartButton = createButton("Restart Game");
+  restartButton.size(200, 75);
+  restartButton.position(width/2-100, height/2-37.5);
+  restartButton.mousePressed(restartGame);
+  restartButton.hide();
   
-  asteroidManager = new AsteroidManager(
-    numAsteroids,
-    largeSprite,
-    mediumSprite,
-    smallSprite
-  );
-  
-  saucerManager = new SaucerManager(
-    enemySpriteLarge,
-    enemySpriteSmall,
-    smallSaucerSpawnProb
-  );
+  newGame();
 }
 
 function draw() {
   background(220);
-
-  switch (gameState) {
-    case GameState.Start:  
-      push();
-        textAlign(CENTER);
-        textSize(100);
-        text("Asteroids", width/2, 225);
-      pop();
-      break;
-    case GameState.Playing:
-      playingGameStateUpdate();
-      break;
-    case GameState.GameOver:
-      push();
-        ship.display();
-        image(explosionSprite, ship.position.x, ship.position.y, 100, 100);
-        asteroidManager.display();
-        background(220, 220, 220, 200);
-        translate(width/2, height/2);
-        textAlign(CENTER);
-        fill(255, 255, 255, 90);
-        rect(0, -15, 300, 125);
-        fill(0);
-        textSize(40);
-        text("GAME OVER!", 0, 0);
-      pop();
-      break;
-    default:
-      console.log("Game mode: " + gameState + " not defined");
-  } 
-  
   displayScore();
   displayHealth();
+  
+  push();
+    if(isScreenShakeActive) {
+      // apply screen shake
+      translate(random(-shakeIntensity, shakeIntensity), 
+              random(-shakeIntensity, shakeIntensity));
+      checkShakeState();
+    }
+
+    switch (gameState) {
+      case GameState.Start:  
+        push();
+          textAlign(CENTER);
+          textSize(100);
+          text("Asteroids", width/2, 225);
+        pop();
+        break;
+      case GameState.Playing:
+        playingGameStateUpdate();
+        break;
+      case GameState.GameOver:
+        push();
+          ship.display();
+          image(explosionSprite, ship.position.x, ship.position.y, 100, 100);
+          asteroidManager.display();
+          background(220, 220, 220, 200);
+          textAlign(CENTER);
+          textSize(100);
+          text("Game Over!", width/2, 225);
+          restartButton.show();
+        pop();
+        break;
+      default:
+        console.log("Game mode: " + gameState + " not defined");
+    } 
+  
+  pop();
   
 }
 
@@ -120,6 +117,14 @@ function draw() {
 function startGame() {
   gameState = GameState.Playing;
   startButton.hide();
+  ship.makeInvulnerable();
+}  
+
+// Starts the game
+function restartGame() {
+  newGame();
+  gameState = GameState.Playing;
+  restartButton.hide();
 }  
 
 function playingGameStateUpdate() {
@@ -130,46 +135,36 @@ function playingGameStateUpdate() {
   
   let asteroids = asteroidManager.asteroids;
   let saucers = saucerManager.saucers;
-  for (let i = 0; i < asteroids.length; i++) {
-    if (ship.checkCollision(asteroids[i])) {
-      ship.respawn();
-    }
-    for(let j = 0; j < saucers.length; j++) {
-      if (saucers[j].checkCollision(asteroids[i])) {
-        saucerManager.destroySaucer(j);
-      }
-    }
-  }
-  
-  for(let i = 0; i < saucers.length; i++) {
-    if (saucers[i].checkCollision(ship)) {
-      ship.respawn();
-      saucerManager.destroySaucer(i);
-    }
-  }
 
   ship.checkProjectileCollision(asteroidManager, saucerManager);
   ship.displayProjectile();
   ship.updateProjectile();
   
+  ship.checkCollisions(asteroids);
+  ship.checkCollisions(saucers);
+  ship.checkVulnerability();
   ship.display();
   ship.update();
-  
   
   if(ship.score > nextSaucerSpawnInterval) {
     nextSaucerSpawnInterval += saucerSpawnInterval;
     saucerManager.spawnSaucer();
   }
-  
+
   saucerManager.checkProjectileCollision(asteroidManager, ship);
   saucerManager.displayProjectile();
   saucerManager.updateProjectile();
   
+  saucerManager.checkCollisions(asteroids);
   saucerManager.display();
-  saucerManager.update();
-
+  saucerManager.update(ship, ship.score);
+  
   asteroidManager.display();
   asteroidManager.update();
+  if(asteroidManager.asteroids.length == 0) {
+    asteroidManager.spawnNextLevel();
+    saucerManager.destroyAllSaucers();
+  }
 }
 
 function displayScore() {
@@ -186,6 +181,17 @@ function displayHealth() {
     textAlign(RIGHT);
     text(scoreText, width-20, 30);
   pop();
+}
+
+function applyScreenShake() {
+  isScreenShakeActive = true;
+  shakeStartFrame = frameCount;
+}
+
+function checkShakeState() {
+  if(isScreenShakeActive && frameCount - shakeStartFrame >= shakeDuration) {
+    isScreenShakeActive = false;
+  }
 }
 
 function keyPressed() {
@@ -208,18 +214,41 @@ function keyPressed() {
   if (keyIsDown(83)) {
     // The 's' key is being pressed.
     ship.teleport();
-    let asteroids = asteroidManager.getAsteroids();
-    for (let i = 0; i < asteroids.length; i++) {
-      if (ship.checkCollision(asteroids[i])) {
-        ship.respawn();
-      }
-    }
   }
 
   if (keyIsDown(87)) {
     // The 'w' key is being pressed.
     ship.turnOnEngine(true);
   }
+}
+
+function newGame() {
+  let startingPosition = createVector(width / 2, height / 2);
+  let startingVelocity = createVector(0, 0);
+  let heading = 0;
+  let spriteSize = 20;
+  let health = 5;
+  ship = new Player(
+    startingPosition,
+    startingVelocity,
+    heading,
+    spriteSize,
+    playerSprite,
+    health
+  );
+
+  asteroidManager = new AsteroidManager(
+    numAsteroids,
+    largeSprite,
+    mediumSprite,
+    smallSprite
+  );
+
+  saucerManager = new SaucerManager(
+    enemySpriteLarge,
+    enemySpriteSmall,
+    smallSaucerSpawnProb
+  );
 }
 
 function keyReleased() {

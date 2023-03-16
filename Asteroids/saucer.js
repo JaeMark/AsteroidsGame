@@ -19,7 +19,7 @@ class Saucer extends Actor {
   }
   
   fire() {
-    let startingPosition = createVector(this.position.x, this.position.y);
+    let stPosition = createVector(this.position.x, this.position.y);
     let startingVelocity = p5.Vector.random2D();
     startingVelocity.mult(5);
     let spriteSize = 5;
@@ -43,7 +43,7 @@ class Saucer extends Actor {
       
       if (player.checkCollision(this.projectiles[i])) {
           this.projectiles[i].destoryProjectile();
-          player.respawn();
+          player.handleDamage();
       }
     }
   }

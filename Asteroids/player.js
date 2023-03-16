@@ -13,9 +13,11 @@ class Player extends Actor {
     this.projectiles = [];
     this.score = 0;
     this.rotation = 0;
-    this.isEngineOne = false;
+    this.isEngineOn = false;
     this.extraHealthThreshold = 10000;
     this.nextScoreThreshold = this.extraHealthThreshold;
+    this.isInvulnerable = false;
+    this.invulnerabilityFrameStart = 0;
   }
 
   isDead() {
@@ -38,7 +40,11 @@ class Player extends Actor {
     }
     super.update();
     this.velocity.mult(0.97);
-  }
+    
+    if(this.isSpawning) {
+      this.spawn();
+    }
+  } 
   
   updateScore(delta) {
     this.score += delta;
@@ -49,28 +55,58 @@ class Player extends Actor {
   }
   
   teleport() {
-    this.position = (createVector(random(0, width), random(0, height)));
+    this.position = createVector(random(0, width), random(0, height));
   }
 
-  respawn() {
-    --this.health;
-    if(!this.isDead()) {
-      this.position = createVector(width / 2, height / 2);
+  handleDamage() {
+    if(!this.isInvulnerable) {
+      --this.health;
+      this.makeInvulnerable();
+      this.position = createVector(width/2, height/2);
     }
   }
 
   display() {
-    push();
-      translate(this.position.x, this.position.y);
-      this.heading += this.rotation;
-      rotate(this.heading + PI / 2);
-      translate(-this.position.x, -this.position.y);
-      super.display();
-    pop();
+    // make player sprite blink if they while in invulnerable state
+    if(!this.isInvulnerable || (this.isInvulnerable && frameCount % 2 == 0)) {
+      push();
+        translate(this.position.x, this.position.y);
+        this.heading += this.rotation;
+        rotate(this.heading + PI / 2);
+        translate(-this.position.x, -this.position.y);
+        super.display();
+      pop();
+    }
+  }
+  
+  makeInvulnerable() {
+    this.isInvulnerable = true;
+    this.invulnerabilityFrameStart = frameCount;
+  }
+  
+  makeVulnerable() {
+    this.isInvulnerable = false;
+  }
+  
+  // manages the player vulnerability state
+  checkVulnerability() {
+    let invulnerabilityDuration = 120; // frames
+    if(this.isInvulnerable && frameCount - this.invulnerabilityFrameStart > 
+       invulnerabilityDuration) {
+      this.makeVulnerable();
+    }
   }
 
   setRotation(angle) {
     this.rotation = angle;
+  }
+  
+  checkCollisions(actors) {
+    for (let i = 0; i < actors.length; i++) {
+      if (this.checkCollision(actors[i])) {
+        this.handleDamage();
+      }
+    }
   }
   
   fire() {
@@ -82,6 +118,12 @@ class Player extends Actor {
     this.projectiles.push(
       new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
     );
+    
+    if(!this.isEngineOn) {
+      let force = p5.Vector.fromAngle(this.heading + PI);
+      force.mult(0.75);
+      this.velocity.add(force);
+    }
   }
   
   checkProjectileCollision(asteroidManager, saucerManager) {
@@ -93,6 +135,7 @@ class Player extends Actor {
           this.projectiles[i].destoryProjectile();
           this.updateScore(asteroidManager.getScore(j));
           asteroidManager.breakup(j);
+          applyScreenShake();
           break;
         }
       }
@@ -102,6 +145,7 @@ class Player extends Actor {
           this.projectiles[i].destoryProjectile();
           this.updateScore(saucerManager.getScore(j));
           saucerManager.destroySaucer(j);
+          applyScreenShake();
           break;
         }
       }

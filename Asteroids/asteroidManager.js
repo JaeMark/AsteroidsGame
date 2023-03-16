@@ -11,19 +11,18 @@ class AsteroidManager {
         this.mediumSprite = mediumSprite;
         this.smallSprite = smallSprite;
         this.asteroids = [];
-        this.initialize();
-        this.lastAsteroidFrame = 0;
-
+        this.spawnAsteroids(this.numAsteroid);
     }
 
     update() {
         for (let i = 0; i < this.asteroids.length; i++) {
           this.asteroids[i].update();
         }
-        if((frameCount - this.lastAsteroidFrame) >= (5 * getFrameRate())) {
-          this.addAsteroid(createVector(random(width), random(height)), AsteroidSize.Large);
-        }
-      
+    }
+
+    spawnNextLevel() {
+      ++this.numAsteroid;
+      this.spawnAsteroids(this.numAsteroid);
     }
 
     display() {
@@ -92,8 +91,8 @@ class AsteroidManager {
         return this.asteroids;
     }
 
-    initialize() {
-        for (let i = 0; i < this.numAsteroid; i++) {
+    spawnAsteroids(numToSpawn) {
+        for (let i = 0; i < numToSpawn; i++) {
             this.addAsteroid(createVector(random(width), random(height)), AsteroidSize.Large);
         }
     }
