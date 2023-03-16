@@ -113,8 +113,8 @@ class Player extends Actor {
     let startingPosition = createVector(this.position.x, this.position.y);
     let startingVelocity = p5.Vector.fromAngle(this.heading);
     startingVelocity.mult(5);
-    let spriteSize = 7.5;
-    let sprite = 10;
+    let spriteSize = 10;
+    let sprite = color("orange");
     this.projectiles.push(
       new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
     );

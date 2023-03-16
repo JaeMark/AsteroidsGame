@@ -22,8 +22,8 @@ class Saucer extends Actor {
     let stPosition = createVector(this.position.x, this.position.y);
     let startingVelocity = p5.Vector.random2D();
     startingVelocity.mult(5);
-    let spriteSize = 5;
-    let sprite = 10;
+    let spriteSize = 7.5;
+    let sprite = color("green"); 
     this.projectiles.push(
       new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
     );
