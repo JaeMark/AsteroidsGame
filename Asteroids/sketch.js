@@ -21,6 +21,9 @@ let shakeDuration = 30;
 let shakeStartFrame = 0;
 let isScreenShakeActive = false;
 
+let bgMusic;
+let bgImage;
+
 let startButton;
 let restartButton;
 
@@ -32,6 +35,9 @@ function preload() {
   smallSprite = loadImage("assets/AsteroidSmall.png");
   enemySpriteSmall = loadImage("assets/EnemyShipSmall.png");
   enemySpriteLarge =  loadImage("assets/EnemyShipLarge.png");
+  
+  bgMusic = loadSound("assets/AsteroidsBackgroundMusic.mp3");
+  bgImage = loadImage("assets/SpaceBackground.jpg");
 }
 
 const GameState = {
@@ -67,10 +73,13 @@ function setup() {
   restartButton.hide();
   
   newGame();
+  
+  bgMusic.loop();
 }
 
 function draw() {
-  background(220);
+  image(bgImage, width/2, height/2);
+  background(0, 0, 0, 200);
   displayScore();
   displayHealth();
   
@@ -125,6 +134,7 @@ function restartGame() {
   newGame();
   gameState = GameState.Playing;
   restartButton.hide();
+  ship.makeInvulnerable();
 }  
 
 function playingGameStateUpdate() {

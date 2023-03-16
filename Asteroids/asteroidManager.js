@@ -74,11 +74,11 @@ class AsteroidManager {
                 sprite = this.largeSprite;
                 break;
             case AsteroidSize.Medium:
-                startingVelocity = p5.Vector.random2D();
+                startingVelocity = p5.Vector.random2D().mult(1.5);
                 sprite = this.mediumSprite;
                 break;
             case AsteroidSize.Small:
-                startingVelocity = p5.Vector.random2D();
+                startingVelocity = p5.Vector.random2D().mult(2);
                 sprite = this.smallSprite;
                 break;
         }
