@@ -4,6 +4,8 @@ class Asteroid extends Actor {
   }
 
   display() {
-    super.display();
+    push();
+      super.display();
+    pop();
   }
 }

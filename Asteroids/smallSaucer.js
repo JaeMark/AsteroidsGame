@@ -20,6 +20,7 @@ class SmallSaucer extends Saucer {
   
   fire(targetActor, aimOffset) {
     let startingPosition = createVector(this.position.x, this.position.y);
+    // get angle between self and target, then add aim offset to the angle
     let angle = atan2(targetActor.position.y - this.position.y, 
                       targetActor.position.x - this.position.x) + 
                 random(-aimOffset, aimOffset);

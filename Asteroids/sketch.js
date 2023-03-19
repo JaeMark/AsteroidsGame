@@ -4,7 +4,7 @@ let playerProjectiles = [];
 let asteroidManager;
 
 let saucerManager;
-let smallSaucerSpawnProb = 1;
+let smallSaucerSpawnProb = 0.25;
 let saucerSpawnInterval = 500;
 let nextSaucerSpawnInterval = saucerSpawnInterval;
 
@@ -24,10 +24,15 @@ let isScreenShakeActive = false;
 let bgMusic;
 let bgImage;
 
+let laserSFX;
+let explosionSFX;
+let asteroidBreakSFX;
+
 let startButton;
 let restartButton;
 
 function preload() {
+  // Source: https://mattwalkden.itch.io/lunar-battle-pack
   playerSprite = loadImage("assets/PlayerShip.png");
   explosionSprite = loadImage("assets/Explosion.png");
   largeSprite = loadImage("assets/AsteroidLarge.png");
@@ -35,8 +40,9 @@ function preload() {
   smallSprite = loadImage("assets/AsteroidSmall.png");
   enemySpriteSmall = loadImage("assets/EnemyShipSmall.png");
   enemySpriteLarge =  loadImage("assets/EnemyShipLarge.png");
-  
+  // Source: https://pixabay.com/sound-effects/final-and-loop-piko-piko-electro-beat-20991/
   bgMusic = loadSound("assets/AsteroidsBackgroundMusic.mp3");
+  // Source: https://wallpapercave.com/w/wp9964316
   bgImage = loadImage("assets/SpaceBackground.jpg");
 }
 
@@ -61,7 +67,7 @@ function setup() {
   textAlign(CENTER);
   startButton = createButton("Start Game");
   startButton.size(200, 75);
-  startButton.position(width/2-100, height/2-37.5);
+  startButton.position(width/2-100, height/2+100);
   startButton.mousePressed(startGame);
   
     
@@ -80,6 +86,7 @@ function setup() {
 function draw() {
   image(bgImage, width/2, height/2);
   background(0, 0, 0, 200);
+  
   displayScore();
   displayHealth();
   
@@ -96,7 +103,7 @@ function draw() {
         push();
           textAlign(CENTER);
           textSize(100);
-          text("Asteroids", width/2, 225);
+          text("Cosmic\nCrusader", width/2, 225);
         pop();
         break;
       case GameState.Playing:
@@ -172,6 +179,7 @@ function playingGameStateUpdate() {
   asteroidManager.display();
   asteroidManager.update();
   if(asteroidManager.asteroids.length == 0) {
+    // spawn next level if all asteroids are destroyed
     asteroidManager.spawnNextLevel();
     saucerManager.destroyAllSaucers();
   }
@@ -204,34 +212,6 @@ function checkShakeState() {
   }
 }
 
-function keyPressed() {
-  if (keyIsDown(65)) {
-    // The 'a' key is being pressed.
-    // rotate counter-clockwise
-    ship.setRotation(-0.1);
-  }
-  if (keyIsDown(68)) {
-    // The 'd' key is being pressed.
-    // rotate clockwise
-    ship.setRotation(0.1);
-  }
-
-  if (keyIsDown(32)) {
-    // The space key is being pressed.
-    ship.fire();
-  }
-  
-  if (keyIsDown(83)) {
-    // The 's' key is being pressed.
-    ship.teleport();
-  }
-
-  if (keyIsDown(87)) {
-    // The 'w' key is being pressed.
-    ship.turnOnEngine(true);
-  }
-}
-
 function newGame() {
   let startingPosition = createVector(width / 2, height / 2);
   let startingVelocity = createVector(0, 0);
@@ -259,6 +239,34 @@ function newGame() {
     enemySpriteSmall,
     smallSaucerSpawnProb
   );
+}
+
+function keyPressed() {
+  if (keyIsDown(65)) {
+    // The 'a' key is being pressed.
+    // rotate counter-clockwise
+    ship.setRotation(-0.1);
+  }
+  if (keyIsDown(68)) {
+    // The 'd' key is being pressed.
+    // rotate clockwise
+    ship.setRotation(0.1);
+  }
+
+  if (keyIsDown(32)) {
+    // The space key is being pressed.
+    ship.fire();
+  }
+  
+  if (keyIsDown(83)) {
+    // The 's' key is being pressed.
+    ship.teleport();
+  }
+
+  if (keyIsDown(87)) {
+    // The 'w' key is being pressed.
+    ship.turnOnEngine(true);
+  }
 }
 
 function keyReleased() {

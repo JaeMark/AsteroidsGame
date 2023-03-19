@@ -19,7 +19,8 @@ class Saucer extends Actor {
   }
   
   fire() {
-    let stPosition = createVector(this.position.x, this.position.y);
+    let startingPosition = createVector(this.position.x, this.position.y);
+    // aim at a random direction
     let startingVelocity = p5.Vector.random2D();
     startingVelocity.mult(5);
     let spriteSize = 7.5;
@@ -33,6 +34,7 @@ class Saucer extends Actor {
     let asteroids = asteroidManager.asteroids;
     let saucers = saucerManager.saucers;
     for (let i = 0; i < this.projectiles.length; i++) {
+      // break asteroids if this saucer's projectile collides with it
       for (let j = 0; j < asteroids.length; j++) {
         if (asteroids[j].checkCollision(this.projectiles[i])) {
           this.projectiles[i].destoryProjectile();
@@ -40,7 +42,7 @@ class Saucer extends Actor {
           break;
         }
       }
-      
+      // damage player if this collides with it
       if (player.checkCollision(this.projectiles[i])) {
           this.projectiles[i].destoryProjectile();
           player.handleDamage();

@@ -15,6 +15,23 @@ class SaucerManager {
     this.nextAimUpgradeThreshold = this.aimUpgradeRequirement;
   }
   
+  display() {
+    for (let i = 0; i < this.saucers.length; i++) {
+        this.saucers[i].display();
+    }
+  }
+  
+  update(targetActor, score) {
+    for (let i = 0; i < this.saucers.length; i++) {
+      if(this.saucers[i].radius == SaucerSize.Small) {
+        this.upgradeAim(score);
+        this.saucers[i].update(targetActor, this.aimOffset);
+      } else {
+        this.saucers[i].update();
+      }
+    }
+  }
+  
   spawnSaucer() {
     let size = SaucerSize.Large;
     let randomNum = random();
@@ -49,23 +66,6 @@ class SaucerManager {
        this.aimOffset *= 0.9;
      }
   }  
-  
-  display() {
-    for (let i = 0; i < this.saucers.length; i++) {
-        this.saucers[i].display();
-    }
-  }
-  
-  update(targetActor, score) {
-    for (let i = 0; i < this.saucers.length; i++) {
-      if(this.saucers[i].radius == SaucerSize.Small) {
-        this.upgradeAim(score);
-        this.saucers[i].update(targetActor, this.aimOffset);
-      } else {
-        this.saucers[i].update();
-      }
-    }
-  }
   
   destroySaucer(index) {
     this.saucers.splice(index, 1);

@@ -19,6 +19,40 @@ class Player extends Actor {
     this.isInvulnerable = false;
     this.invulnerabilityFrameStart = 0;
   }
+  
+  
+  update() {
+    if (this.isEngineOn) {
+      this.thrust();
+    }
+    super.update();
+    this.velocity.mult(0.97);
+    if(this.isSpawning) {
+      this.spawn();
+    }
+  } 
+  
+  updateScore(delta) {
+    this.score += delta;
+    // get an additional health every 1000 points
+    if(this.score > this.nextScoreThreshold) {
+      ++this.health;
+      this.nextScoreThreshold += this.extraHealthThreshold;
+    }
+  }
+  
+
+  handleDamage() {
+    if(!this.isInvulnerable) {
+      --this.health;
+      this.makeInvulnerable();
+      this.position = createVector(width/2, height/2);
+    }
+  }
+  
+  setRotation(angle) {
+    this.rotation = angle;
+  }
 
   isDead() {
     return this.health <= 0;
@@ -27,43 +61,16 @@ class Player extends Actor {
   turnOnEngine(isEngineSetToTurnOn) {
     this.isEngineOn = isEngineSetToTurnOn;
   }
-
-  thrust() {
-    let force = p5.Vector.fromAngle(this.heading);
-    force.mult(0.1);
-    this.velocity.add(force);
-  }
-
-  update() {
-    if (this.isEngineOn) {
-      this.thrust();
-    }
-    super.update();
-    this.velocity.mult(0.97);
-    
-    if(this.isSpawning) {
-      this.spawn();
-    }
-  } 
-  
-  updateScore(delta) {
-    this.score += delta;
-    if(this.score > this.nextScoreThreshold) {
-      ++this.health;
-      this.nextScoreThreshold += this.extraHealthThreshold;
-    }
-  }
   
   teleport() {
     this.position = createVector(random(0, width), random(0, height));
   }
 
-  handleDamage() {
-    if(!this.isInvulnerable) {
-      --this.health;
-      this.makeInvulnerable();
-      this.position = createVector(width/2, height/2);
-    }
+
+  thrust() {
+    let force = p5.Vector.fromAngle(this.heading);
+    force.mult(0.1);
+    this.velocity.add(force);
   }
 
   display() {
@@ -96,18 +103,6 @@ class Player extends Actor {
       this.makeVulnerable();
     }
   }
-
-  setRotation(angle) {
-    this.rotation = angle;
-  }
-  
-  checkCollisions(actors) {
-    for (let i = 0; i < actors.length; i++) {
-      if (this.checkCollision(actors[i])) {
-        this.handleDamage();
-      }
-    }
-  }
   
   fire() {
     let startingPosition = createVector(this.position.x, this.position.y);
@@ -115,14 +110,21 @@ class Player extends Actor {
     startingVelocity.mult(5);
     let spriteSize = 10;
     let sprite = color("orange");
-    this.projectiles.push(
-      new Projectile(startingPosition, startingVelocity, spriteSize, sprite)
-    );
+    let projectile = new Projectile(startingPosition, startingVelocity, spriteSize, sprite);
+    this.projectiles.push(projectile);
     
     if(!this.isEngineOn) {
       let force = p5.Vector.fromAngle(this.heading + PI);
       force.mult(0.75);
       this.velocity.add(force);
+    }
+  }
+  
+  checkCollisions(actors) {
+    for (let i = 0; i < actors.length; i++) {
+      if (this.checkCollision(actors[i])) {
+        this.handleDamage();
+      }
     }
   }
   
